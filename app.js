@@ -79,6 +79,7 @@ function searchByTraits(people){
 
 }
 
+
 function mainMenu(person, people) {
 	const mainMenuUserActionChoice = validatedPrompt(
 		`Person: ${person.firstName} ${person.lastName}\n\nDo you want to know their full information, family, or descendants?`,
@@ -88,7 +89,7 @@ function mainMenu(person, people) {
 	switch (mainMenuUserActionChoice) {
 		case 'info':
 			//! TODO
-			// displayPersonInfo(person);
+			displayPersonInfo(person);
 			break;
 		case 'family':
 			//! TODO
@@ -108,6 +109,12 @@ function mainMenu(person, people) {
 
 	return mainMenu(person, people);
 }
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function displayPersonInfo(person) {
+	alert(`Name: ${person.firstName} ${person.lastName}\nGender: ${person.gender}\nDOB: ${person.dob}\nHeight: ${person.height}\nWeight: ${person.weight}\nEye Color: ${person.eyeColor}\nOccupation: ${person.occupation}\nParents: ${person.parents}\nCurrent Spouse: ${person.currentSpouse}`);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function displayPeople(displayTitle, peopleToDisplay) {
 	const formatedPeopleDisplayText = peopleToDisplay
