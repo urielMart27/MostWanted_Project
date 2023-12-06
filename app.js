@@ -70,15 +70,26 @@ function searchByName(people) {
 	);
 	return fullNameSearchResults;
 }
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function searchByTraits(people){
-	const traitToSearchFor = prompt("Please enter the trait of the person you are searching for.");
-	const traitSearchResults = people.filter(person => person.traits.some(trait => trait.toLowerCase()=== traitToSearchFor.toLowerCase())
-	);
-	return traitSearchResults;
 
+	const traitCategory = validatedPrompt(
+		"Please choose a trait category to search by.",
+		["gender","dob","height","weight","eye color", "occupation"]
+		);
+
+		const uniqueTraits = Array.from(new Set(people.flatMap(person => person[traitCategory])));
+		const chosenTrait = validatedPrompt(`Please choose a ${traitCategory} to search by:`, uniqueTraits
+		);
+		const traitSearchResults = people.filter(person =>
+			person[traitCategory] && person[traitCategory].includes(chosenTrait)
+		
+		);
+
+		return traitSearchResults;
+
+	
 }
-
 
 function mainMenu(person, people) {
 	const mainMenuUserActionChoice = validatedPrompt(
