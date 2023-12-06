@@ -93,8 +93,8 @@ function mainMenu(person, people) {
 			break;
 		case 'family':
 			//! TODO
-			// let personFamily = findPersonFamily(person, people);
-			// displayPeople('Family', personFamily);
+			let personFamily = findPersonFamily(person, people);
+			displayPeople('Family', personFamily);
 			break;
 		case 'descendants':
 			//! TODO
@@ -109,12 +109,38 @@ function mainMenu(person, people) {
 
 	return mainMenu(person, people);
 }
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 function displayPersonInfo(person) {
 	alert(`Name: ${person.firstName} ${person.lastName}\nGender: ${person.gender}\nDOB: ${person.dob}\nHeight: ${person.height}\nWeight: ${person.weight}\nEye Color: ${person.eyeColor}\nOccupation: ${person.occupation}\nParents: ${person.parents}\nCurrent Spouse: ${person.currentSpouse}`);
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function findPersonFamily(person, people) {
+	let familyInfo = [];
+if (person.currentSpouse !== null) {
+	const spouse = people.find((p) => p.id === person.currentSpouse);
+	familyInfo.push(`Spouse: ${spouse.firstName} ${spouse.lastName}`)
+}
+
+if (person.parents !== null && person.parents.length > 0) {
+	const parentsNames = person.parents.map((parentId) => {
+		const parent = people.find((p) => p.id === parentId);
+		return parent ? `${parent.firstName} ${parent.lastName}` : "";
+
+	});
+	familyInfo.push(`Parents: ${parentsNames.join(", ")}`);
+}
+if (person.parents !== null && person.parents.length > 0) { 
+	const siblings = people.filter((p) => 
+	p.parents && p.parents.length > 0 && p.parents.some((parentId) => person.parents.includes(parentId)) && p.id !== person.id);
+
+	if (siblings.length > 0) {
+		const siblingsNames = siblings.map((sibling) => `${sibling.firstName} ${sibling.lastName}`);
+		familyInfo.push(`Siblings: ${siblingsNames.join(", ")}`);
+	}
+	
+}
+	alert(familyInfo.join("\n"));
+}
 
 function displayPeople(displayTitle, peopleToDisplay) {
 	const formatedPeopleDisplayText = peopleToDisplay
