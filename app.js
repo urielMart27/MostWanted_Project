@@ -98,8 +98,8 @@ function mainMenu(person, people) {
 			break;
 		case 'descendants':
 			//! TODO
-			// let personDescendants = findPersonDescendants(person, people);
-			// displayPeople('Descendants', personDescendants);
+			let personDescendants = findPersonDescendants(person, people);
+			displayPeople('Descendants', personDescendants);
 			break;
 		case 'quit':
 			return;
@@ -140,6 +140,26 @@ if (person.parents !== null && person.parents.length > 0) {
 	
 }
 	alert(familyInfo.join("\n"));
+}
+function findPersonDescendants(person,people) {
+	let descendants = [];
+
+	const findDescendants = (currentPerson) => {
+		const children = people.filter((p) => p.parents && p.parents.includes(currentPerson.id));
+
+		if (children.length > 0) {
+			descendants = descendants.concat(children);
+			children.forEach((child) => findDescendants(child));
+		}
+	};
+	findDescendants(person);
+
+	if (descendants.length > 0) {
+		const descendantsNames = descendants.map((descendant) => `${descendant.firstName} ${descendant.lastName}`);
+		alert(`Descendants: ${descendantsNames.join(", ")}`);
+	} else {
+		alert("No Descendants Found.");
+	}
 }
 
 function displayPeople(displayTitle, peopleToDisplay) {
