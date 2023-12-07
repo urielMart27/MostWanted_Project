@@ -72,23 +72,31 @@ function searchByName(people) {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function searchByTraits(people){
+	const traitCategory = chooseTraitCategory(people);
+	const chosenTrait = chooseSpecificTrait(people, traitCategory);
+	const traitSearchResults = filterPeopleByTrait(people, traitCategory, chosenTrait);
+	if (traitSearchResults.length > 0) {
 
-	const traitCategory = validatedPrompt(
-		"Please choose a trait category to search by.",
-		["gender","dob","height","weight","eye color", "occupation"]
-		);
-
-		const uniqueTraits = Array.from(new Set(people.flatMap(person => person[traitCategory])));
-		const chosenTrait = validatedPrompt(`Please choose a ${traitCategory} to search by:`, uniqueTraits
-		);
-		const traitSearchResults = people.filter(person =>
-			person[traitCategory] && person[traitCategory].includes(chosenTrait)
-		
-		);
-
-		return traitSearchResults;
-
-	
+		const formattedNames = traitSearchResults.map(person => `${person.firstName} ${person.lastName}`).join("\n");
+		alert (`People with ${traitCategory} "${chosenTrait}": \n${formattedNames} `);
+	} else {
+		alert (`No people found with ${traitCategory} '${traitCategory}'.`);
+	}
+	return traitSearchResults;
+}
+function chooseTraitCategory(people) {
+	const traitCategories = ["gender", "dob", "height", "weight", "eye color", "occupation"];
+	return validatedPrompt("Please choose a trait category to search by.", traitCategories);
+}
+function chooseSpecificTrait(people, traitCategory) {
+	const uniqueTraits = Array.from(new Set(people.flatMap(person => person[traitCategory])));
+	alert(`Available ${traitCategory} traits: \n${uniqueTraits.join("\n")}`);
+	return validatedPrompt(`Please choose a ${traitCategory} to search by:`, uniqueTraits);
+}
+function filterPeopleByTrait(people, traitCategory, chosenTrait) {
+	return people.filter(person =>
+		person[traitCategory] && person[traitCategory].some(trait => trait.toLowerCase() === chosenTrait.toLowerCase())
+	);
 }
 
 function mainMenu(person, people) {
